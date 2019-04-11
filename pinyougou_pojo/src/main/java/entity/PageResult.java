@@ -1,4 +1,4 @@
-package com.pinyougou.entity;
+package entity;
 
 import com.pinyougou.pojo.TbBrand;
 
