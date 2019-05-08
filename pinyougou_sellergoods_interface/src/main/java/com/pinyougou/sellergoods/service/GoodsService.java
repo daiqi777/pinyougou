@@ -1,8 +1,10 @@
 package com.pinyougou.sellergoods.service;
-import java.util.List;
-import com.pinyougou.pojo.TbGoods;
 
+import com.pinyougou.pojo.TbGoods;
+import com.pinyougou.pojogroup.Goods;
 import entity.PageResult;
+
+import java.util.List;
 /**
  * 业务逻辑接口
  * @author Steven
@@ -33,7 +35,7 @@ public interface GoodsService {
 	/**
 	 * 修改
 	 */
-	public void update(TbGoods goods);
+	public void update(Goods goods);
 	
 
 	/**
@@ -41,7 +43,7 @@ public interface GoodsService {
 	 * @param id
 	 * @return
 	 */
-	public TbGoods findOne(Long id);
+	public Goods findOne(Long id);
 	
 	
 	/**
@@ -57,5 +59,19 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
-	
+
+	/**
+	 * 增加商品
+	 */
+	public void add(Goods goods);
+
+
+	/**
+	 * 跟据id列表，更新状态
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long[] ids,String status);
+
+
 }

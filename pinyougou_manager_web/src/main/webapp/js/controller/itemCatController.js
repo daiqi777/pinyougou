@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemCatController' ,function($scope,$controller,itemCatService){	
+app.controller('itemCatController' ,function($scope,$controller,itemCatService,typeTemplateService){	
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -37,13 +37,15 @@ app.controller('itemCatController' ,function($scope,$controller,itemCatService){
 		if($scope.entity.id!=null){//如果有ID
 			serviceObject=itemCatService.update( $scope.entity ); //修改  
 		}else{
+            $scope.entity.parentId=$scope.parentId;//赋予上级ID
 			serviceObject=itemCatService.add( $scope.entity  );//增加 
 		}				
 		serviceObject.success(
 			function(response){
 				if(response.success){
-					//重新查询 
-		        	$scope.reloadList();//重新加载
+					//重新查询
+                    $scope.findByParentId($scope.parentId);//重新加载
+		        	//$scope.reloadList();//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -75,5 +77,52 @@ app.controller('itemCatController' ,function($scope,$controller,itemCatService){
 			}			
 		);
 	}
-    
+    $scope.parentId=0;
+	$scope.findByParentId=function (parentId) {
+		$scope.parentId=parentId;
+		itemCatService.findByParentId(parentId).success(function (response) {
+			$scope.list=response;
+        })
+    }
+
+
+    //面包屑当前级别
+    $scope.grade=1;
+	$scope.setGrade=function (value) {
+		$scope.grade=value;
+    }
+
+    $scope.selectList=function (p_entity) {
+		if ($scope.grade==1){
+            $scope.entity_1=null;
+            $scope.entity_2=null;
+        }else if ($scope.grade==2){
+            $scope.entity_1=p_entity;
+            $scope.entity_2=null;
+        } else {
+            $scope.entity_2=p_entity;
+		}
+		$scope.findByParentId(p_entity.id);
+    }
+
+	$scope.typeTemp=function () {
+		typeTemplateService.findAll().success(function (response) {
+
+        })
+    }
+
+    $scope.typeList={data:[]}
+    $scope.findTypeList=function () {
+		typeTemplateService.findAll().success(function (response) {
+            for (var k = 0; k < response.length; k++) {
+                response[k]["text"]=response[k]["name"];
+                delete response[k]["specIds"];
+                delete response[k]["brandIds"];
+                delete response[k]["customAttributeItems"];
+                delete response[k]["name"];
+            }
+			$scope.typeList={data:response};
+        })
+    }
+
 });	

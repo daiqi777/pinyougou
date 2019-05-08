@@ -1,8 +1,11 @@
 package com.pinyougou.sellergoods.service;
-import java.util.List;
-import com.pinyougou.pojo.TbTypeTemplate;
 
+import com.pinyougou.pojo.TbTypeTemplate;
 import entity.PageResult;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * 业务逻辑接口
  * @author Steven
@@ -57,5 +60,12 @@ public interface TypeTemplateService {
 	 * @return
 	 */
 	public PageResult findPage(TbTypeTemplate typeTemplate, int pageNum, int pageSize);
-	
+
+	/**
+	 * 跟据模板id查询规格列表
+	 * @param id
+	 * @return
+	 */
+	public List<Map> findSpecList(Long id);
+
 }

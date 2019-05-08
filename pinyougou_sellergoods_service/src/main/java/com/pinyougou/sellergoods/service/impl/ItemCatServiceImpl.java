@@ -1,16 +1,17 @@
 package com.pinyougou.sellergoods.service.impl;
-import java.util.Arrays;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.pinyougou.mapper.TbItemCatMapper;
 import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.sellergoods.service.ItemCatService;
 import entity.PageResult;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 业务逻辑实现
@@ -84,12 +85,24 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 */
 	@Override
 	public void delete(Long[] ids) {
+
+		List al = new ArrayList();
+		for (Long id : ids) {
+			if (findByParentId(id)!=null){
+				List<TbItemCat> itemCats = findByParentId(id);
+				for (TbItemCat itemCat : itemCats) {
+					al.add(itemCat.getId());
+				}
+				al.add(id);
+			}
+		}
+		System.out.println(al);
 		//数组转list
-        List longs = Arrays.asList(ids);
+        //List longs = Arrays.asList(al);
         //构建查询条件
         Example example = new Example(TbItemCat.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id", longs);
+        criteria.andIn("id", al);
 
         //跟据查询条件删除数据
         itemCatMapper.deleteByExample(example);
@@ -125,5 +138,13 @@ public class ItemCatServiceImpl implements ItemCatService {
 		
 		return result;
 	}
-	
+
+	@Override
+	public List<TbItemCat> findByParentId(Long parentId){
+		TbItemCat where = new TbItemCat();
+		where.setParentId(parentId);
+		List<TbItemCat> catList = itemCatMapper.select(where);
+		return catList;
+	}
+
 }

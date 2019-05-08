@@ -1,15 +1,14 @@
 package com.pinyougou.manager.controller;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbSeller;
 import com.pinyougou.sellergoods.service.SellerService;
-
 import entity.PageResult;
 import entity.Result;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 /**
  * 请求处理器
  * @author Steven
@@ -79,8 +78,9 @@ public class SellerController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbSeller findOne(Long id){
-		return sellerService.findOne(id);		
+	public TbSeller findOne(String id){
+
+		return sellerService.findOne(id);
 	}
 	
 	/**

@@ -102,7 +102,8 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
             for (var k = 0; k < response.length; k++) {
                 delete response[k]["specName"];
             }
-            $scope.specList={data:response}
+
+            $scope.specList={data:response};
         })
     }
 
